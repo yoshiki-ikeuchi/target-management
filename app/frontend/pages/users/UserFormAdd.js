@@ -1,13 +1,13 @@
 import { any } from "prop-types";
 import React, { useReducer, useState } from "react";
 import { useHistory } from "react-router";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import TextControl from "../../components/form/TextControl";
 import axios from "axios";
 import {getErrorCondition, getErroMessage} from "../../common/error"
 import Button from "@material-ui/core/Button";
 
-import { InputLabel, FormControl, FormHelperText, Select, MenuItem } from "@material-ui/core";
+import SelectControl from "../../components/form/SelectControl";
 
 // user initialState
 const initialState = {
@@ -104,27 +104,22 @@ const UserFormAdd = (props) => {
     >戻る</Button>
   );
 
-  const adminSelect = (
-    <FormControl
+  const authorityOptions = [
+    {value: "", text: "　"},
+    {value: "administrator", text: "administrator"},
+    {value: "member", text: "member"}
+  ];
+
+  const adminSelect = (  
+    <SelectControl
+      control={control}
+      name="authority"
+      label="権限"
+      options={authorityOptions}
+      defaultValue={state.authority}
       error={getErrorCondition(state.errors, "authority")}
-      style={{minWidth:150}}
-    >        
-      <InputLabel id="demo-simple-select-label">権限</InputLabel>
-      <Controller
-        render={
-          // eslint-disable-next-line react/display-name
-          ({ field }) => <Select {...field}>
-            <MenuItem value={""}>　</MenuItem>
-            <MenuItem value={"administrator"}>administrator</MenuItem>
-            <MenuItem value={"member"}>member</MenuItem>
-          </Select>
-        }
-        control={control}
-        name="authority"
-        defaultValue={state.authority}
-      />
-      <FormHelperText>{getErroMessage(state.errors, "authority")}</FormHelperText>
-    </FormControl>
+      helperText={getErroMessage(state.errors, "authority")}
+    />
   );
 
   const adminText = (
