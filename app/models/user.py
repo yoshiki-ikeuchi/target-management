@@ -49,6 +49,27 @@ class User(UserMixin, db.Model):
             
         return validate
     
+    # 新規登録用の入力チェック
+    def validCreate(self):
+        validate = True
+        if not self.login_id:
+            self.errors['login_id'] = 'ログインIDは必須入力です。'
+            validate = False
+        if not self.password:
+            self.errors['password'] = 'パスワードは必須入力です。'
+            validate = False
+        if not self.user_name:
+            self.errors['user_name'] = 'ユーザ名は必須入力です。'
+            validate = False
+        if not self.email:
+            self.errors['email'] = 'メールアドレスは必須入力です。'
+            validate = False
+        if not self.authority:
+            self.errors['authority'] = '権限は必須入力です。'
+            validate = False
+            
+        return validate
+
     @classmethod
     def get_user_list(self, params):
         # ダサいがこうするしかなく。。。

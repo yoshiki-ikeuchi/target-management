@@ -116,9 +116,18 @@ const UserForm = (props) => {
 
     axios.patch(url, JSON.parse(userJSON))
     .then(
-
+      () => {
+        alert("登録処理が完了。");
+        history.push("/users");
+      }
     ).catch(
-
+      (error) => {
+        if (error.response.status === 400) {
+          alert("登録に失敗。");
+        } else {
+          alert("サーバーエラーです。");
+        }
+      }
     );
   }
 
@@ -195,6 +204,17 @@ const UserForm = (props) => {
           readOnly={readOnly}
           error={getErrorCondition(state.errors, "user_name")}
           helperText={getErroMessage(state.errors, "user_name")}            
+        />
+        <br/>
+        <br/>
+        <TextControl
+          control={control}
+          name="email"
+          label="メールアドレス"
+          value={state.email}
+          readOnly={readOnly}
+          error={getErrorCondition(state.errors, "email")}
+          helperText={getErroMessage(state.errors, "email")}            
         />
         <br/>
         <br/>

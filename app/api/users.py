@@ -83,3 +83,56 @@ def do_confirm(id):
 @login_required
 def do_update(id):
     print(id);
+    params = request.get_json()
+    user = db.session.query(User).get(id)
+    user.login_id = params["user"]["login_id"]
+    user.password = params["user"]["password"]
+    user.user_name = params["user"]["user_name"]
+    user.email = params["user"]["email"]
+    db.session.commit()
+    return jsonify({}), 200
+
+@users_bp.route("/api/users/createConfirm", methods=["post"])
+@login_required
+def do_createConfirm():
+    params = request.get_json()
+    print(params);
+
+    # 登録済か確認する
+    user = db.session.query(User).filter_by(login_id=params["user"]["login_id"]).all();
+    if user:
+        return jsonify({'login_id': '登録済のユーザーです。'}), 400
+    
+    # DB定義を取得（処理はmodelsの方に書いている）
+    userCreate = User()
+
+    # 取得したパラメータをセットする
+    userCreate.set_update_attribute(params)
+
+    # バリデートチェックを実行
+    if not userCreate.validCreate():
+        # だめなら400で終了
+        return jsonify(userCreate.errors), 400
+
+    return jsonify({}), 200
+
+@users_bp.route("/api/users/create", methods=["post"])
+@login_required
+def do_create():
+    params = request.get_json()
+    print(params);
+    # DB定義を取得（処理はmodelsの方に書いている）
+    userCreate = User()
+
+    # 取得したパラメータをセットする
+    userCreate.set_update_attribute(params)
+
+    # バリデートチェックを実行
+    if not userCreate.validCreate():
+        # だめなら400で終了
+        return jsonify(userCreate.errors), 400
+
+    db.session.add(userCreate)
+    db.session.commit()
+
+    return jsonify({}), 200
