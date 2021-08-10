@@ -1,5 +1,5 @@
 from app import app
-from flask import session, jsonify
+from flask import session, jsonify, render_template
 from datetime import timedelta
 
 # リクエスト前処理
@@ -16,14 +16,15 @@ def before_request():
 @app.errorhandler(404)
 @app.errorhandler(500)
 def error_handler(error):
-    print('******** error handler ********')
-    response = jsonify({ 
-                "error": {
-                    "type": error.name, 
-                    "message": error.description
-                }
-    })
-    return response, error.code
+#    print('******** error handler ********')
+#    response = jsonify({ 
+#                "error": {
+#                    "type": error.name, 
+#                    "message": error.description
+#                }
+#    })
+#    return response, error.code
+    return render_template("error.html", title=error.code, code=str(error.code) + " " + error.name, message=error.description)
 
 if __name__ == "__main__":
     app.run(debug=app.config["DEBUG"], port=app.config["PORT"])

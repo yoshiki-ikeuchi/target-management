@@ -1,32 +1,26 @@
 import { any } from "prop-types";
 import React from "react"
-import Button from "@material-ui/core/Button";
-import { useHistory } from "react-router";
+
+import UsersCard from "../../pages/users/card/UsersCard";
 
 const UsersList = (props) => {
   const userList = props.users;
-  const history = useHistory();
 
   return (
-    <div>
+    <div style={{marginBottom:10}}>
       {
         userList.map((user, idx) => (
           <div key={idx}>
-            <label>{user.id}</label>
-            <label>{user.user_name}</label>
-            <label>{user.email}</label>
-            <label>{user.authority}</label>
-            <Button 
-              type="button"
-              variant="contained" 
-              color="primary"
-              onClick={() => { history.push(`/users/${user.id}`) }}
-            >
-              詳細
-            </Button>
+            <UsersCard 
+              id={user.id}
+              user_name={user.user_name}
+              email={user.email}
+              authority={user.authority}
+            />
           </div>
         ))
       }
+      <div style={{clear:"both"}}></div>
     </div>
   );
 }

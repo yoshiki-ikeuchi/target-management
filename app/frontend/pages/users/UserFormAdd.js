@@ -134,54 +134,32 @@ const UserFormAdd = (props) => {
     />
   );
 
+  const TextControlParam = [
+    {name: "user_name", label: "ユーザ名", value: state.user_name},
+    {name: "email", label: "メールアドレス", value: state.email},
+    {name: "login_id", label: "ログインID", value: state.login_id},
+    {name: "password", label: "パスワード", value: state.password}
+  ]
+
   return (
     <main>
       <h1>ユーザー新規登録</h1>
       <form onSubmit={handleSubmit(pageMode === "confirm" ? doPost : doConfirm)}>
-        <div style={{marginTop:10}}>
-        <TextControl
-          control={control}
-          name="user_name"
-          label="ユーザ名"
-          value={state.user_name}
-          readOnly={readOnly}
-          error={getErrorCondition(state.errors, "user_name")}
-          helperText={getErroMessage(state.errors, "user_name")}            
-        />
-        </div>
-        <div style={{marginTop:10}}>
-        <TextControl
-          control={control}
-          name="email"
-          label="メールアドレス"
-          value={state.user_name}
-          readOnly={readOnly}
-          error={getErrorCondition(state.errors, "email")}
-          helperText={getErroMessage(state.errors, "email")}            
-        />
-        </div>
-        <div style={{marginTop:10}}>
-        <TextControl
-          control={control}
-          name="login_id"
-          label="ログインID"
-          value={state.login_id}
-          readOnly={readOnly}
-          error={getErrorCondition(state.errors, "login_id")}
-          helperText={getErroMessage(state.errors, "login_id")}            
-        />
-        </div>
-        <div style={{marginTop:10}}>
-        <TextControl
-          control={control}
-          name="password"
-          label="パスワード"
-          value={state.password}
-          readOnly={readOnly}
-          error={getErrorCondition(state.errors, "password")}
-          helperText={getErroMessage(state.errors, "password")}            
-        />
-        </div>
+      {
+        TextControlParam.map((param, key) => (
+          <div style={{marginTop:10}} key={key}>
+          <TextControl
+            control={control}
+            name={param.name}
+            label={param.label}
+            value={param.value}
+            readOnly={readOnly}
+            error={getErrorCondition(state.errors, param.name)}
+            helperText={getErroMessage(state.errors, param.name)}            
+          />
+          </div>
+        ))
+      }
         <div style={{marginTop:10}}>
         {pageMode === "confirm" ? adminText : adminSelect}
         </div>
