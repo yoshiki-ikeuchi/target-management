@@ -37,6 +37,8 @@ const Menu = () => {
       <br/>
       <Link to="/items">アイテム一覧</Link>
       <br/>
+      <Link to="/cars">車両検索</Link>
+      <br/>
       {
         isAdmin ? 
         <Link to="/users">ユーザ一覧</Link>
@@ -44,6 +46,12 @@ const Menu = () => {
         <></>
       }
       <br/>
+      {
+        isAdmin ? 
+        <Link to="/carsCreate">車両登録</Link>
+        :
+        <></>
+      }
       <br/>
       <LogoutButton />
     </main>

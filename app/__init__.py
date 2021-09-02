@@ -17,13 +17,14 @@ def create_app(test_config=None):
 
     with app.app_context():
         """ import parts """
-        from .api import login, memu, items, users, test
+        from .api import login, memu, items, users, test, cars
         """ register Blueprints """
         app.register_blueprint(login.login_bp)
         app.register_blueprint(memu.menu_bp)
         app.register_blueprint(items.items_bp)
         app.register_blueprint(users.users_bp)
         app.register_blueprint(test.test_bp)
+        app.register_blueprint(cars.cars_bp)
         
         # Flask Login
         login_manager = LoginManager()

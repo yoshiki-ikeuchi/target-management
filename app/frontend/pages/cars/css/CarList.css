@@ -1,0 +1,33 @@
+/* style.css */
+.cardOuterFrame{
+  width: 340px;
+  border: 1px solid gray;
+  border-radius: 4px;
+  float: left;
+  margin-right: 10px;
+  margin-top: 10px;
+  position: relative;
+}
+
+.cardTabel{
+  display: table;
+}
+
+.cardTitle{
+  background-color: #fceeeb;
+}
+
+.cardTabelRow{
+  display: table-row;
+}
+
+.cardTabelCell{
+  display: table-cell;
+  padding: 5px;
+}
+
+.cardbtn{
+    position: absolute;
+    bottom: 3px;
+    right: 3px;
+}
