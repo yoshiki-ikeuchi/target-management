@@ -45,4 +45,35 @@ def cars():
 @cars_bp.route("/api/cars/createConfirm", methods=["post"])
 @login_required
 def do_createConfirm():
-    return ""
+    params = request.get_json()
+    carsCreate = Car()
+
+    # 取得したパラメータをセットする
+    carsCreate.set_update_attribute(params)
+
+    # バリデートチェックを実行
+    if not carsCreate.valid():
+        # だめなら400で終了
+        return jsonify(carsCreate.errors), 400
+
+    return jsonify({}), 200
+
+@cars_bp.route("/api/cars/create", methods=["post"])
+@login_required
+def do_create():
+    params = request.get_json()
+    carsCreate = Car()
+
+    # 取得したパラメータをセットする
+    carsCreate.set_update_attribute(params)
+
+    # バリデートチェックを実行
+    if not carsCreate.valid():
+        # だめなら400で終了
+        return jsonify(carsCreate.errors), 400
+
+    # DB登録
+    db.session.add(carsCreate)
+    db.session.commit()
+
+    return jsonify({}), 200

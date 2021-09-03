@@ -16,6 +16,7 @@ const CarsList = (props) => {
               maker={car.maker}
               model={car.model}
               grade={car.grade}
+              bodyColor={car.bodyColor}
               price={car.price}
               navi={car.navi}
               kawa={car.kawa}

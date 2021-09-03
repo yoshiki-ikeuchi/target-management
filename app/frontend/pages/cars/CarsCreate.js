@@ -10,7 +10,7 @@ import SelectControlMaker from "../../components/form/SelectControl_maker";
 import CheckboxControl from "../../components/form/CheckboxControl";
 import TextControl from "../../components/form/TextControl";
 
-// user initialState
+// initialState
 const initialState = {
   maker: "",
   model: "",
@@ -37,23 +37,56 @@ const reducer = (state, action) => {
 }
 
 const carsCreate = (props) => {
-  const {control, handleSubmit} = useForm();
+  const {control, handleSubmit, reset} = useForm();
   const [state, dispatch] = useReducer(reducer, initialState);
   const [pageMode, setPageMode] = useState(props.pageMode);
+  const history = useHistory();
   const readOnly = pageMode !== "confirm" ? false : true;
 
-  // user 入力チェック
+  // 入力チェック
   const doConfirm = async (data) => {
-    dispatch({type: 'ERROR_CLEAR'})
-    setPageMode("confirm");
+    const url = `/api/cars/createConfirm`;
+    const userJSON = `{"carData": ${JSON.stringify(data)}}`
+    await axios.post(url, JSON.parse(userJSON))
+    .then(
+      () => {
+        setPageMode("confirm");
+        dispatch({type: 'ERROR_CLEAR'})
+      }
+    ).catch(
+      (error) => {
+        if (error.response.status === 400) {
+          const errors = error.response.data;
+          dispatch({type: 'CONFIRM', payload: errors})
+        } else {
+          history.push('/');
+        }
+      }
+    );
   }
 
-  // user 登録更新
+  // 登録
   const doPost = async (data) => {
-    setPageMode("edit");
-    alert(`${JSON.stringify(data)}`);
+    const url = `/api/cars/create`;
+    const userJSON = `{"carData": ${JSON.stringify(data)}}`
+    await axios.post(url, JSON.parse(userJSON))
+    .then(
+      () => {
+        setPageMode("complate");
+      }
+    ).catch(
+      (error) => {
+        if (error.response.status === 400) {
+          const errors = error.response.data;
+          dispatch({type: 'CONFIRM', payload: errors})
+        } else {
+          history.push('/');
+        }
+      }
+    );
   }
 
+  // メニューに戻るボタン
   const menuBtn = (
     <Button
       variant="contained"
@@ -64,6 +97,7 @@ const carsCreate = (props) => {
     </Button>
   );
 
+  // 入力画面に戻るボタン
   const backBtn = (
     <Button 
         type="button"
@@ -74,10 +108,9 @@ const carsCreate = (props) => {
         }}
       >戻る</Button>
     );
-
-  return (
-    <main>
-      <h1>車両登録</h1>
+  
+  // 入力・確認画面
+  const formContents = (
       <form onSubmit={handleSubmit(pageMode !== "edit" ? doPost : doConfirm)}>
         <div style={{display: "inline-block"}}>
           <div>
@@ -109,6 +142,17 @@ const carsCreate = (props) => {
               readOnly={readOnly}
               error={getErrorCondition(state.errors, "grade")}
               helperText={getErroMessage(state.errors, "grade")}
+            />
+          </div>
+          <div style={{marginTop:10}}>
+            <TextControl
+              control={control}
+              name="bodyColor"
+              label="ボディカラー"
+              value={state.bodyColor}
+              readOnly={readOnly}
+              error={getErrorCondition(state.errors, "bodyColor")}
+              helperText={getErroMessage(state.errors, "bodyColor")}
             />
           </div>
         </div>
@@ -161,6 +205,30 @@ const carsCreate = (props) => {
           </div>
         </div>
       </form>
+  );
+
+  // 完了画面
+  // pageModeを入力にして、form内をリセットする
+  // resetはreact-hook-formの機能で、フォームリセット
+  const complateContents = (
+    <div>
+      <div style={{marginBottom: 10}}>登録処理が完了しました。</div>
+      <Button 
+        type="button"
+        variant="contained" 
+        color="primary"
+        onClick={() => { 
+          setPageMode("edit");
+          reset();
+        }}
+      >登録画面に戻る</Button>
+    </div>
+  );
+
+  return (
+    <main>
+      <h1>{pageMode !== "complate" ? "車両登録" : ""}</h1>
+      {pageMode !== "complate" ? formContents : complateContents}
     </main>
   );
 }

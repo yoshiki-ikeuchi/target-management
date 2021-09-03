@@ -5,6 +5,7 @@ from sqlalchemy import Column, BigInteger, String, Enum, or_
 from marshmallow import fields
 from flask_login import UserMixin
 import enum
+import re
 
 class AuthType(str, enum.Enum):
     administrator = "administrator"
@@ -30,9 +31,11 @@ class Car(UserMixin, db.Model):
     def set_update_attribute(self, params):
         # エラーメッセージのインスタンス変数を作成
         self.errors = {'fatal': False}
-        # ユーザ画面からくる値をインスタンスに設定
-        for key in list(params["cars"].keys()):
-            setattr(self, key, params["cars"][key])
+        # 登録画面からくる値をインスタンスに設定
+        # 一部データ（checkboxのboolとか）は、DB登録時にいい感じにデータを入れてくれるっぽい
+        # ※つまりは余計なことをしなくていい
+        for key in list(params["carData"].keys()):
+            setattr(self, key, params["carData"][key])
     
     @classmethod
     def get_car_list(self, params):
@@ -62,7 +65,12 @@ class Car(UserMixin, db.Model):
                 self.price >= params['price_bottom']
             )
         
-        if params['navi']=="true" or params['kawa']=="true" or params['sr']=="sr":
+        if params['bodyColor']:
+            cars = cars.filter(
+                self.bodyColor.like("%{}%".format(params['bodyColor']))
+            )
+        
+        if params['navi']=="true" or params['kawa']=="true" or params['sr']=="true":
             if params['navi']=="true":
                 cars = cars.filter(
                     self.navi == "1"
@@ -98,17 +106,32 @@ class Car(UserMixin, db.Model):
     # 入力チェック
     def valid(self):
         validate = True
-        # 一旦ストレートに書きます。
         if not self.maker:
-            self.errors['maker'] = 'ログインIDは必須入力です。'
+            self.errors['maker'] = 'メーカーは必須入力です。'
             validate = False
         if not self.model:
-            self.errors['model'] = 'パスワードは必須入力です。'
+            self.errors['model'] = '車種名は必須入力です。'
             validate = False
         if not self.grade:
-            self.errors['grade'] = 'ユーザ名は必須入力です。'
+            self.errors['grade'] = 'グレードは必須入力です。'
             validate = False
-            
+        if not self.bodyColor:
+            self.errors['bodyColor'] = 'ボディカラーは必須入力です。'
+            validate = False 
+        if not self.price:
+            self.errors['price'] = '価格は必須入力です。'
+            validate = False
+        else:
+            # pythonにも数値判定関数はあるが、全角も許容するため、正規表現で書いてみる
+            if not re.compile(r'^-?[0-9]+$').match(self.price):
+                self.errors['price'] = '半角数値以外の文字が入力されています。'
+                validate = False
+            else:
+                # 文字扱いされているので、キャストする。
+                # ひとつ前の判定で、半角10進数以外は弾かれているので大丈夫（のはず…）
+                if not 0 <= int(self.price) <= 100000000:
+                    self.errors['price'] = '範囲外の数値が入力されています。'
+                    validate = False
         return validate
 
 class CarSchema(ma.SQLAlchemySchema):
@@ -116,6 +139,7 @@ class CarSchema(ma.SQLAlchemySchema):
     maker = fields.Str()
     model = fields.Str()
     grade = fields.Str()
+    bodyColor = fields.Str()
     price = fields.Integer()
     navi = fields.Str()
     kawa = fields.Str()

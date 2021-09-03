@@ -54,6 +54,7 @@ SelectControl_maker.propTypes = {
   control: any,
   defaultValue: string,
   helperText: string,
+  readOnly: bool,
   error: bool,
   field: any
 };

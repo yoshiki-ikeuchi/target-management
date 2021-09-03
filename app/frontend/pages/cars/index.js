@@ -13,7 +13,7 @@ import TextControl from "../../components/form/TextControl";
 const Cars = () => {
   const {control, handleSubmit} = useForm();
   const [carsResult, setCarsResult] = useState([]);
-  const [searchResult, setSearchResult] = useState('検索してください。');
+  const [searchResult, setSearchResult] = useState('');
   const history = useHistory();
 
   const doSearch = async (data) => {
@@ -30,7 +30,7 @@ const Cars = () => {
       (error) => {
         if (error.response.status === 404 ) {
           // エラーメッセージを取得
-          setSearchResult('検索結果がなしよー');
+          setSearchResult("検索結果が見つかりませんでした。orz");
           setCarsResult([]);
         } else {
           // その他はサーバサイドエラーとしてしまう。
@@ -69,6 +69,15 @@ const Cars = () => {
               control={control}
               name="grade"
               label="グレード"
+              value=""
+              readOnly={false}
+            />
+          </div>
+          <div style={{marginTop:10}}>
+            <TextControl
+              control={control}
+              name="bodyColor"
+              label="ボディカラー"
               value=""
               readOnly={false}
             />

@@ -7,6 +7,7 @@ const CarsCard = (props) => {
   const maker = props.maker;
   const model = props.model;
   const grade = props.grade;
+  const bodyColor = props.bodyColor;
   const price = props.price;
   const navi = props.navi;
   const kawa = props.kawa;
@@ -33,6 +34,10 @@ const CarsCard = (props) => {
             <div className={"cardTabelCell"}>{grade}</div>
           </div>
           <div className={"cardTabelRow"}>
+            <div className={"cardTabelCell cardTitle"}>ボディカラー</div>
+            <div className={"cardTabelCell"}>{bodyColor}</div>
+          </div>
+          <div className={"cardTabelRow"}>
             <div className={"cardTabelCell cardTitle"}>価格</div>
             <div className={"cardTabelCell"}>￥{price}</div>
           </div>
@@ -51,6 +56,7 @@ CarsCard.propTypes = {
   model: string,
   grade: string,
   price: number,
+  bodyColor: string,
   navi: string,
   kawa: string,
   sr: string
