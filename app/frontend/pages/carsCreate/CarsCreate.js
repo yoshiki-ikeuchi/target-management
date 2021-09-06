@@ -10,6 +10,21 @@ import SelectControlMaker from "../../components/form/SelectControl_maker";
 import CheckboxControl from "../../components/form/CheckboxControl";
 import TextControl from "../../components/form/TextControl";
 
+// material-ui の makeStyles を使ってみる
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles({
+  mt10: {
+    marginTop: 10
+  },
+  mb10: {
+    marginBottom: 10
+  },
+  ml10: {
+    marginLeft: 10
+  },
+});
+
 // initialState
 const initialState = {
   maker: "",
@@ -42,6 +57,9 @@ const carsCreate = (props) => {
   const [pageMode, setPageMode] = useState(props.pageMode);
   const history = useHistory();
   const readOnly = pageMode !== "confirm" ? false : true;
+
+  // スタイル有効化
+  const classes = useStyles();
 
   // 入力チェック
   const doConfirm = async (data) => {
@@ -122,7 +140,7 @@ const carsCreate = (props) => {
               helperText={getErroMessage(state.errors, "maker")}
             />
           </div>
-          <div style={{marginTop:10}}>
+          <div className={classes.mt10}>
             <TextControl
               control={control}
               name="model"
@@ -133,7 +151,7 @@ const carsCreate = (props) => {
               helperText={getErroMessage(state.errors, "model")}
             />
           </div>
-          <div style={{marginTop:10}}>
+          <div className={classes.mt10}>
             <TextControl
               control={control}
               name="grade"
@@ -144,7 +162,7 @@ const carsCreate = (props) => {
               helperText={getErroMessage(state.errors, "grade")}
             />
           </div>
-          <div style={{marginTop:10}}>
+          <div className={classes.mt10}>
             <TextControl
               control={control}
               name="bodyColor"
@@ -168,7 +186,7 @@ const carsCreate = (props) => {
                 helperText={getErroMessage(state.errors, "price")}
               />
           </div>
-          <div style={{marginTop: 10, marginBottom: 10}}>
+          <div className={`${classes.mt10} ${classes.mb10}`}>
             <CheckboxControl
               name="navi"
               control={control}
@@ -193,7 +211,7 @@ const carsCreate = (props) => {
           </div>
           <div>
             {pageMode !== "edit" ? backBtn : menuBtn}
-            <span style={{marginLeft:10}}>
+            <span className={classes.ml10}>
               <Button 
                 type="submit"
                 variant="contained" 
