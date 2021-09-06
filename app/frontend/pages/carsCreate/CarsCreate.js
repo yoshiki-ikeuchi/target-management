@@ -45,7 +45,7 @@ const carsCreate = (props) => {
 
   // 入力チェック
   const doConfirm = async (data) => {
-    const url = `/api/cars/createConfirm`;
+    const url = `/api/carsCreate/createConfirm`;
     const userJSON = `{"carData": ${JSON.stringify(data)}}`
     await axios.post(url, JSON.parse(userJSON))
     .then(
@@ -67,7 +67,7 @@ const carsCreate = (props) => {
 
   // 登録
   const doPost = async (data) => {
-    const url = `/api/cars/create`;
+    const url = `/api/carsCreate/create`;
     const userJSON = `{"carData": ${JSON.stringify(data)}}`
     await axios.post(url, JSON.parse(userJSON))
     .then(

@@ -1,6 +1,47 @@
 import { number, string } from "prop-types";
 import React from "react"
-import "../css/CarList.css";
+
+// styled-components で css in js やってみる
+import styled from 'styled-components';
+
+// 要素のコンポーネントを作ってみます
+const CardOuterFrame = styled.div`
+  width: 340px;
+  border: 1px solid gray;
+  border-radius: 4px;
+  float: left;
+  margin-right: 10px;
+  margin-top: 10px;
+  position: relative;
+`;
+
+const CardTabel = styled.div`
+  display: table;
+`;
+
+const CardTabelRow = styled.div`
+  display: table-row;
+`;
+
+// パラメータをもらって、文字の色を出し分け
+const CardTabelCell = styled.div`
+  display: table-cell;
+  padding: 5px;
+  color: ${(props) => (props.price ? "red" : "black")};
+`;
+
+// cardTabelCell のstyleを継承
+// パラメータを受け取って、タイトル部分の色を変更
+const CardTitle = styled(CardTabelCell)`
+  width: 96px;
+  background-color: ${(props) => props.bc};
+`;
+
+// 初期値設定
+CardTitle.defaultProps = {
+  bc: "#fceeeb",
+}
+// コンポーネント作成ここまで
 
 const CarsCard = (props) => {
   const carId = props.carId;
@@ -15,40 +56,41 @@ const CarsCard = (props) => {
 //  const history = useHistory();
 
   return (
-      <div className={"cardOuterFrame"}>
-        <div className={"cardTabel"}>
-          <div className={"cardTabelRow"}>
-            <div className={"cardTabelCell cardTitle"}>車種ID</div>
-            <div className={"cardTabelCell"}>{carId}</div>
-          </div>
-          <div className={"cardTabelRow"}>
-            <div className={"cardTabelCell cardTitle"}>メーカー名</div>
-            <div className={"cardTabelCell"}>{maker}</div>
-          </div>
-          <div className={"cardTabelRow"}>
-            <div className={"cardTabelCell cardTitle"}>車種名</div>
-            <div className={"cardTabelCell"}>{model}</div>
-          </div>
-          <div className={"cardTabelRow"}>
-            <div className={"cardTabelCell cardTitle"}>グレード</div>
-            <div className={"cardTabelCell"}>{grade}</div>
-          </div>
-          <div className={"cardTabelRow"}>
-            <div className={"cardTabelCell cardTitle"}>ボディカラー</div>
-            <div className={"cardTabelCell"}>{bodyColor}</div>
-          </div>
-          <div className={"cardTabelRow"}>
-            <div className={"cardTabelCell cardTitle"}>価格</div>
-            <div className={"cardTabelCell"}>￥{price}</div>
-          </div>
-          <div className={"cardTabelRow"}>
-            <div className={"cardTabelCell cardTitle"}>装備</div>
-            <div className={"cardTabelCell"}>{navi == "1" ? "ナビ " : ""}{kawa == "1" ? "革 " : ""}{sr == "1" ? "サンルーフ" : ""}</div>
-          </div>
-        </div>
-      </div>
+      <CardOuterFrame>
+        <CardTabel>
+          <CardTabelRow>
+            <CardTitle>車種ID</CardTitle>
+            <CardTabelCell>{carId}</CardTabelCell>
+          </CardTabelRow>
+          <CardTabelRow>
+            <CardTitle>メーカー名</CardTitle>
+            <CardTabelCell>{maker}</CardTabelCell>
+          </CardTabelRow>
+          <CardTabelRow>
+            <CardTitle>車種名</CardTitle>
+            <CardTabelCell>{model}</CardTabelCell>
+          </CardTabelRow>
+          <CardTabelRow>
+            <CardTitle>グレード</CardTitle>
+            <CardTabelCell>{grade}</CardTabelCell>
+          </CardTabelRow>
+          <CardTabelRow>
+            <CardTitle>ボディカラー</CardTitle>
+            <CardTabelCell>{bodyColor}</CardTabelCell>
+          </CardTabelRow>
+          <CardTabelRow>
+            <CardTitle>価格</CardTitle>
+            <CardTabelCell price>￥{price}</CardTabelCell>
+          </CardTabelRow>
+          <CardTabelRow>
+            <CardTitle bc="#a0d8ef">装備</CardTitle>
+            <CardTabelCell>{navi == "1" ? "ナビ " : ""}{kawa == "1" ? "革 " : ""}{sr == "1" ? "サンルーフ" : ""}</CardTabelCell>
+          </CardTabelRow>
+        </CardTabel>
+      </CardOuterFrame>
   );
 }
+
 // 何故かTSが邪魔しているので
 CarsCard.propTypes = {
   carId: number,
@@ -61,6 +103,5 @@ CarsCard.propTypes = {
   kawa: string,
   sr: string
 }
-
 
 export default React.memo(CarsCard);
