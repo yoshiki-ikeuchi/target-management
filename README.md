@@ -57,21 +57,27 @@ app/__init__.py
 ├── app
 │    ├── __init__.py ※ファイルパス設定
 │    ├── api
-│    │   └── cars.py ※バックエンド処理
+│    │   ├── cars.py ※検索バックエンド処理
+│    │   ├── carsCreate.py ※登録バックエンド処理
+│    │   └── carsUpdate.py ※更新バックエンド処理
 │    ├── frontend
 │    │   ├── App.js ※ルーティング
 │    │   ├── components
 │    │   │   └── form ※共通コンポーネント
 │    │   │       ├── CheckboxControl.js
+│    │   │       ├── radioControl.js ※工事中
 │    │   │       └── SelectControl_maker.js
 │    │   └── pages
-│    │       ├── cars ※車両登録・検索のフロントエンド処理
-│    │       │   ├── CarsCreate.js
-│    │       │   ├── CarsList.js
+│    │       ├── cars ※車両検索のフロントエンド処理
 │    │       │   ├── card ※検索結果共通化・ここでしか使わないため、ここに配置
 │    │       │   │   └── CarsCard.js
 │    │       │   ├── css
 │    │       │   │   └── CarList.css
+│    │       │   ├── CarsList.js
+│    │       │   └── index.js
+│    │       ├── CarsCreate ※車両登録のフロントエンド処理
+│    │       │   └── index.js
+│    │       ├── carsUpdate ※車両更新のフロントエンド処理
 │    │       │   └── index.js
 │    │       └── menu
 │    │            └── index.js

@@ -1,6 +1,6 @@
 """ login users API """
 from flask import Blueprint, render_template, request, jsonify
-from flask_login import login_required
+from flask_login import login_required, current_user
 from db import db
 from ..models.car import Car, CarSchema
 
@@ -30,7 +30,7 @@ def cars():
         検索処理 
     """
     params = request.values
-    cars = Car.get_car_list(params)
+    cars = Car.get_car_list(params, current_user.authority == "administrator")
     
     # 検索結果がない場合
     if len(cars) == 0:
@@ -38,4 +38,4 @@ def cars():
     
     # JSONに変換
     car_schema = CarSchema()
-    return jsonify({'cars': car_schema.dump(cars, many=True)}), 200
+    return jsonify({'cars': car_schema.dump(cars, many=True), 'authority': current_user.authority}), 200

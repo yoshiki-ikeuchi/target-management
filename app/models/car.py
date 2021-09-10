@@ -19,6 +19,7 @@ class Car(UserMixin, db.Model):
     grade = Column(String(100), nullable=False)
     bodyColor = Column(String(100), nullable=False)
     price = Column(BigInteger, nullable=False)
+    publicFlg = Column(String(1), nullable=False)
     navi = Column(String(1), nullable=False)
     kawa = Column(String(1), nullable=False)
     sr = Column(String(1), nullable=False)
@@ -38,7 +39,7 @@ class Car(UserMixin, db.Model):
             setattr(self, key, params["carData"][key])
     
     @classmethod
-    def get_car_list(self, params):
+    def get_car_list(self, params, authority):
         cars = db.session.query(self)
         if params['maker']:
             cars = cars.filter(
@@ -98,6 +99,11 @@ class Car(UserMixin, db.Model):
                     or_(self.sr == "0", self.sr == "", self.sr == None)
                 )
 
+        if not authority:
+            cars = cars.filter(
+                self.publicFlg == "1"
+            )
+
         # order by 
         cars = cars.order_by(self.carId)
         
@@ -123,7 +129,8 @@ class Car(UserMixin, db.Model):
             validate = False
         else:
             # pythonにも数値判定関数はあるが、全角も許容するため、正規表現で書いてみる
-            if not re.compile(r'^-?[0-9]+$').match(self.price):
+            # 念のため、文字列としてキャストする
+            if not re.compile(r'^-?[0-9]+$').match(str(self.price)):
                 self.errors['price'] = '半角数値以外の文字が入力されています。'
                 validate = False
             else:
@@ -141,6 +148,7 @@ class CarSchema(ma.SQLAlchemySchema):
     grade = fields.Str()
     bodyColor = fields.Str()
     price = fields.Integer()
+    publicFlg = fields.Str()
     navi = fields.Str()
     kawa = fields.Str()
     sr = fields.Str()

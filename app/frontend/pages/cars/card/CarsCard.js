@@ -1,4 +1,4 @@
-import { number, string } from "prop-types";
+import { bool, number, string } from "prop-types";
 import React from "react"
 
 // styled-components で css in js やってみる
@@ -41,6 +41,24 @@ const CardTitle = styled(CardTabelCell)`
 CardTitle.defaultProps = {
   bc: "#fceeeb",
 }
+
+// 更新ボタン
+const UpdateBtn = styled.a.attrs(props => {
+  return{
+    href: `/carsUpdate/${props.carId}`,
+    target: '_self'
+  }
+})`
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  padding: 5px 15px;
+  border-radius: 5px;
+  background-color: #007bbb;
+  color: white;
+  text-decoration: none;
+`;
+
 // コンポーネント作成ここまで
 
 const CarsCard = (props) => {
@@ -50,13 +68,29 @@ const CarsCard = (props) => {
   const grade = props.grade;
   const bodyColor = props.bodyColor;
   const price = props.price;
+  const publicFlg = props.publicFlg;
   const navi = props.navi;
   const kawa = props.kawa;
   const sr = props.sr;
+  const authority = props.authority;
 //  const history = useHistory();
+
+  const publicCell = (
+    <CardTabelRow>
+      <CardTitle>公開フラグ</CardTitle>
+      <CardTabelCell>{publicFlg == "1" ? "公開" : "非公開"}</CardTabelCell>
+    </CardTabelRow>
+  );
+
+  const updateBtn = (
+    <UpdateBtn carId={carId}>
+      更新
+    </UpdateBtn>
+  );
 
   return (
       <CardOuterFrame>
+        {authority ? updateBtn : ""}
         <CardTabel>
           <CardTabelRow>
             <CardTitle>車種ID</CardTitle>
@@ -82,6 +116,7 @@ const CarsCard = (props) => {
             <CardTitle>価格</CardTitle>
             <CardTabelCell price>￥{price}</CardTabelCell>
           </CardTabelRow>
+          {authority ? publicCell : ""}
           <CardTabelRow>
             <CardTitle bc="#a0d8ef">装備</CardTitle>
             <CardTabelCell>{navi == "1" ? "ナビ " : ""}{kawa == "1" ? "革 " : ""}{sr == "1" ? "サンルーフ" : ""}</CardTabelCell>
@@ -97,11 +132,13 @@ CarsCard.propTypes = {
   maker: string,
   model: string,
   grade: string,
-  price: number,
   bodyColor: string,
+  price: number,
+  publicFlg: string,
   navi: string,
   kawa: string,
-  sr: string
+  sr: string,
+  authority: bool,
 }
 
 export default React.memo(CarsCard);

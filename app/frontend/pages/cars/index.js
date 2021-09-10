@@ -15,6 +15,9 @@ const Cars = () => {
   const [carsResult, setCarsResult] = useState([]);
   const [searchResult, setSearchResult] = useState('');
   const history = useHistory();
+  
+  // ユーザー権限持ちまわし
+  const [authority, setAuthority] = useState('');
 
   const doSearch = async (data) => {
     
@@ -25,6 +28,7 @@ const Cars = () => {
     .then(
       (response) => {
         setCarsResult(response.data.cars);
+        setAuthority(response.data.authority);
       }
     ).catch(
       (error) => {
@@ -150,7 +154,7 @@ const Cars = () => {
         carsResult.length === 0 ?
         <div>{searchResult}</div>
         :
-        <CarsList cars={carsResult} />
+        <CarsList cars={carsResult} authority={authority} />
       }
     </main>
   );

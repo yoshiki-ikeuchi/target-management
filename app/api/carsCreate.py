@@ -46,6 +46,7 @@ def do_create():
     carsCreate = Car()
 
     # 取得したパラメータをセットする
+    params["carData"]["publicFlg"] = "1"
     carsCreate.set_update_attribute(params)
 
     # バリデートチェックを実行

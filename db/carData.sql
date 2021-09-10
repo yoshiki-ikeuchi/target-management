@@ -5,6 +5,7 @@ create table carData(
   grade varchar(100),
   bodyColor varchar(100),
   price int(10),
+  publicFlg char(1),
   navi char(1),
   kawa char(1),
   sr char(1)
@@ -26,6 +27,10 @@ insert into carData(
   'プレミアムホライゾンオレンジ',
   2000000,
   "1",
+  "1",
   "",
   "1"
 );
+
+/* カラム追加のみはこちら */
+ALTER TABLE carData ADD COLUMN publicFlg CHAR(1) NOT NULL DEFAULT '0' AFTER price;

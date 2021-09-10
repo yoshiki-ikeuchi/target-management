@@ -1,10 +1,11 @@
-import { any } from "prop-types";
+import { any, string } from "prop-types";
 import React from "react"
 
 import CarsCard from "../../pages/cars/card/CarsCard";
 
 const CarsList = (props) => {
   const carsList = props.cars;
+  const authority = props.authority;
 
   return (
     <div style={{marginBottom:10}}>
@@ -18,9 +19,11 @@ const CarsList = (props) => {
               grade={car.grade}
               bodyColor={car.bodyColor}
               price={car.price}
+              publicFlg={car.publicFlg}
               navi={car.navi}
               kawa={car.kawa}
               sr={car.sr}
+              authority={authority == "administrator"}
             />
           </div>
         ))
@@ -31,7 +34,8 @@ const CarsList = (props) => {
 }
 // 何故かTSが邪魔しているので
 CarsList.propTypes = {
-  cars: any
+  cars: any,
+  authority: string
 }
 
 

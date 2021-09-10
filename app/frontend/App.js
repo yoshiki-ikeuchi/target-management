@@ -12,7 +12,8 @@ import UserFormAdd from "./pages/users/UserFormAdd";
 import Items from "./pages/items";
 
 import Cars from "./pages/cars";
-import CarsCreate from "./pages/carsCreate/CarsCreate";
+import CarsCreate from "./pages/carsCreate";
+import CarsUpdate from "./pages/carsUpdate";
 
 const App = () => {
   return (
@@ -27,7 +28,7 @@ const App = () => {
         </Route>
         <Route exact path="/users/new/edit" >
           <UserFormAdd pageMode="new" />
-        </Route>              
+        </Route>
         <Route exact path="/users/:id" >
           <UserForm pageMode="show" />
         </Route>
@@ -42,7 +43,14 @@ const App = () => {
         </Route>  
         <Route exact path="/carsCreate/edit" >
           <CarsCreate pageMode="edit" />
-        </Route>  
+        </Route>
+
+        <Route exact path="/carsUpdate/:id" >
+          <CarsUpdate pageMode="show" />
+        </Route>
+        <Route exact path="/carsUpdate/:id/edit" >
+          <CarsUpdate pageMode="edit" />
+        </Route>
       </Switch>
     </BrowserRouter>
   );
