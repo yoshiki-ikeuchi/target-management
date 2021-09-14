@@ -50,6 +50,117 @@ app/__init__.py
 　例）styled.div<{ xxxx: string }>
 ```
 
+## cssについて
+```
+◆簡単にcssファイルをあてる
+import "cssファイルの場所";
+→cssファイル内はいつものように書きます
+
+当てたい要素に
+className={"クラス名"}
+例）
+<div className={"cardOuterFrame"}>...</div>
+
+※備考
+どこかでcssをインポートすると、全画面に反映されるっぽい…。
+→単純なcssインポートする際は、注意した方がいいかも…
+
+◆styleを記載する
+要素に直接styleを適用する
+
+例）
+<div style={{marginTop: 10, marginBottom: 10, display:"inline-block"}}>...</div>
+
+cssプロパティ名はハイフンを削除して、キャメルケースで書きます。
+値指定部分が数値以外の時は、""で囲み、いつものように記載します。
+複数要素がある場合は、「,」で区切ります。
+
+◆makeStylesを使う
+・material-uiの機能のため、使用する箇所でインポート
+import { makeStyles } from '@material-ui/core/styles';
+
+・cssの内容を定義する
+const useStyles = makeStyles({
+  mt10: {
+    marginTop: 10
+  },
+  mb10: {
+    marginBottom: 10
+  },
+  ml10: {
+    marginLeft: 10
+  },
+});
+
+cssプロパティ名はハイフンを削除して、キャメルケースで書きます。
+値指定部分が数値以外の時は、""で囲み、いつものように記載します。
+複数要素がある場合は、「,」で区切ります。
+
+・使いたいところで呼び出す
+const carsCreate = (props) => {
+      …
+      const classes = useStyles();
+      …
+}
+
+・使用する
+<div className={classes.mt10}>...</div>
+→mt10で設定したcssが適用される（今回の場合はmargin-top:10px;）
+
+※比較的簡単なイメージ
+
+◆styled-componentsを使う
+・機能インポート
+import styled from 'styled-components';
+
+・要素を作成する
+const testFrame = styled.div`
+  width: 340px;
+`;
+
+・要素を使用する
+<testFrame></testFrame>
+→width: 340pxのdivが作成される。
+
+・パラメータの引き渡しも可能
+const testFrame = styled.div`
+  width: 340px;
+  color: ${(props) => (props.red ? "red" : "black")};
+`;
+
+<testFrame>黒文字です</testFrame>
+<testFrame red>赤文字です</testFrame>
+
+・継承もできます
+const testFrame = styled.div`
+  width: 340px;
+  color: ${(props) => (props.red ? "red" : "black")};
+`;
+
+const mainFrame = styled(testFrame)`
+  background-color: "blue";
+`;
+
+<mainFrame>青背景黒文字で幅340pxです</mainFrame>
+<mainFrame red>青背景赤文字で幅340pxです</mainFrame>
+
+・タグ要素も設定できます
+const linkBtn = styled.a.attrs(props => {
+  return{
+    href: `/test/test`,
+    target: '_self'
+  }
+})`
+  padding: 5px 15px;
+  border-radius: 5px;
+  background-color: #007bbb;
+  color: white;
+  text-decoration: none;
+`;
+
+<linkBtn>リンクです</linkBtn>
+```
+
 ## 追加・変更したディレクトリ・ファイル構成
 
 ```

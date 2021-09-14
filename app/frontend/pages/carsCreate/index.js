@@ -23,6 +23,10 @@ const useStyles = makeStyles({
   ml10: {
     marginLeft: 10
   },
+  left: {
+    display:"inline-block",
+    marginLeft: 20
+  },
 });
 
 // initialState
@@ -174,7 +178,7 @@ const carsCreate = (props) => {
             />
           </div>
         </div>
-        <div style={{display:"inline-block", marginLeft: 20}}>
+        <div className={classes.left}>
           <div>
               <TextControl
                 control={control}
