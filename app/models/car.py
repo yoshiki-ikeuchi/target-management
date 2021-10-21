@@ -152,4 +152,7 @@ class CarSchema(ma.SQLAlchemySchema):
     navi = fields.Str()
     kawa = fields.Str()
     sr = fields.Str()
+    # こんな書き方もあるらしいのでメモ
+    # class Meta:
+    # model = Car
     

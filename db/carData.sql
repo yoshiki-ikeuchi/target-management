@@ -1,7 +1,8 @@
 drop table carData;
 create table carData(
   carId int(20) AUTO_INCREMENT PRIMARY KEY,
-  maker varchar(50), model varchar(100),
+  maker varchar(50),
+  model varchar(100),
   grade varchar(100),
   bodyColor varchar(100),
   price int(10),
